@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/analytics/analytics_events.dart';
+import '../../../core/analytics/analytics_service.dart';
 import '../../../domain/repositories/profile_repository.dart';
 import '../../widgets/senior_mode_toggle.dart';
 import '../home/home_screen.dart';
@@ -13,6 +17,7 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  static const _analytics = AnalyticsService();
   final _nameController = TextEditingController();
 
   @override
@@ -26,6 +31,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (displayName.isNotEmpty) {
       await context.read<ProfileRepository>().updateDisplayName(displayName);
     }
+    unawaited(_analytics.capture(AnalyticsEvent.onboardingCompleted));
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (_) => const HomeScreen()),
