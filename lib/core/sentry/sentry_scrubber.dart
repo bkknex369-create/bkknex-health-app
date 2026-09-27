@@ -19,23 +19,20 @@ const _sensitiveKeys = {
 };
 
 FutureOr<SentryEvent?> scrubBeforeSend(SentryEvent event, Hint hint) {
-  final scrubbedExtra = event.extra == null
-      ? null
-      : {
-          for (final entry in event.extra!.entries)
-            if (!_sensitiveKeys.contains(entry.key.toLowerCase()))
-              entry.key: entry.value,
-        };
-  final scrubbedBreadcrumbs = event.breadcrumbs
-      ?.map((b) => b.copyWith(
-            data: b.data == null
-                ? null
-                : {
-                    for (final entry in b.data!.entries)
-                      if (!_sensitiveKeys.contains(entry.key.toLowerCase()))
-                        entry.key: entry.value,
-                  },
-          ))
-      .toList();
-  return event.copyWith(extra: scrubbedExtra, breadcrumbs: scrubbedBreadcrumbs);
+  if (event.extra != null) {
+    event.extra = {
+      for (final entry in event.extra!.entries)
+        if (!_sensitiveKeys.contains(entry.key.toLowerCase()))
+          entry.key: entry.value,
+    };
+  }
+  for (final breadcrumb in event.breadcrumbs ?? const <Breadcrumb>[]) {
+    if (breadcrumb.data == null) continue;
+    breadcrumb.data = {
+      for (final entry in breadcrumb.data!.entries)
+        if (!_sensitiveKeys.contains(entry.key.toLowerCase()))
+          entry.key: entry.value,
+    };
+  }
+  return event;
 }
