@@ -8,7 +8,8 @@
 enum AnalyticsEvent {
   onboardingCompleted('onboarding_completed'),
   waterLogged('water_logged'),
-  weightLogged('weight_logged');
+  weightLogged('weight_logged'),
+  aiChatStarted('ai_chat_started');
 
   const AnalyticsEvent(this.eventName);
 

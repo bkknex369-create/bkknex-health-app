@@ -6,6 +6,7 @@ import 'package:bkknex_health_app/domain/models/user_profile.dart';
 import 'package:bkknex_health_app/domain/models/water_record.dart';
 import 'package:bkknex_health_app/domain/models/weight_record.dart';
 import 'package:bkknex_health_app/domain/models/wellness_summary.dart';
+import 'package:bkknex_health_app/domain/repositories/ai_repository.dart';
 import 'package:bkknex_health_app/domain/repositories/current_user_service.dart';
 import 'package:bkknex_health_app/domain/repositories/daily_summary_repository.dart';
 import 'package:bkknex_health_app/domain/repositories/metric_repositories.dart';
@@ -94,4 +95,25 @@ class FakeNutritionRepository implements NutritionRepository {
 
   @override
   Future<List<NutritionRecord>> recent({int days = 7}) async => logged;
+}
+
+/// Fake for [AiRepository]. Configure [chatResponse] for a happy-path
+/// reply, or [chatError] to simulate a Worker-reported [AiRepositoryException].
+class FakeAiRepository implements AiRepository {
+  Map<String, dynamic>? chatResponse;
+  AiRepositoryException? chatError;
+  final List<Map<String, dynamic>> chatRequests = [];
+
+  @override
+  Future<Map<String, dynamic>> chat(Map<String, dynamic> requestBody) async {
+    chatRequests.add(requestBody);
+    if (chatError != null) throw chatError!;
+    return chatResponse ?? const {'reply': 'ok'};
+  }
+
+  @override
+  Future<Map<String, dynamic>> insight(Map<String, dynamic> requestBody) async {
+    if (chatError != null) throw chatError!;
+    return chatResponse ?? const {};
+  }
 }

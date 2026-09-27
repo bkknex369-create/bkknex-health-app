@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/accessibility/accessibility_mode_controller.dart';
+import '../data/ai/http_ai_repository.dart';
 import '../data/local/metric_write_queue.dart';
 import '../data/local/sync_service.dart';
 import '../data/supabase/current_user_service_impl.dart';
@@ -11,6 +12,7 @@ import '../data/supabase/health_goals_repository_impl.dart';
 import '../data/supabase/metric_repositories_impl.dart';
 import '../data/supabase/profile_repository_impl.dart';
 import '../data/supabase/supabase_client_provider.dart';
+import '../domain/repositories/ai_repository.dart';
 import '../domain/repositories/current_user_service.dart';
 import '../domain/repositories/daily_summary_repository.dart';
 import '../domain/repositories/health_goals_repository.dart';
@@ -44,6 +46,9 @@ class AppProviders extends StatelessWidget {
         Provider<SyncService>.value(value: syncService),
         Provider<CurrentUserService>(
           create: (_) => CurrentUserServiceImpl(client),
+        ),
+        Provider<AiRepository>(
+          create: (_) => HttpAiRepository(client),
         ),
         Provider<SleepRepository>(
           create: (_) => SleepRepositoryImpl(client, queue),
