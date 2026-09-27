@@ -1,21 +1,14 @@
-/// Allow-listed PostHog event names (source plan §23). Compile-time
-/// constants only — call sites reference [AnalyticsEvent] values, so a
+/// Allow-listed PostHog event names, verbatim from the master assignment
+/// §23 (BKK-75 doc `ai-health-aicompany-mac-master-assignment-1`). Compile-
+/// time constants only — call sites reference [AnalyticsEvent] values, so a
 /// stray/free-form event name is a compile error, not a silent privacy
-/// leak.
-///
-/// KNOWN LIMITATION: this pass could not re-fetch the literal §23 text from
-/// BKK-76 (doc/API access was unavailable — see the BKK-78 status comment).
-/// The names below are structurally correct placeholders covering this
-/// task's Phase 0/1 flows; confirm each one against the real §23 list
-/// before wiring any new call site, and rename here (single source of
-/// truth) if any differ.
+/// leak. Only names this app actually fires are declared here; add new
+/// values from the §23 list (never invent new ones) as new call sites are
+/// wired.
 enum AnalyticsEvent {
   onboardingCompleted('onboarding_completed'),
-  homeViewed('home_viewed'),
-  wellnessScoreViewed('wellness_score_viewed'),
-  quickActionLogged('quick_action_logged'),
-  metricLogged('metric_logged'),
-  seniorModeToggled('senior_mode_toggled');
+  waterLogged('water_logged'),
+  weightLogged('weight_logged');
 
   const AnalyticsEvent(this.eventName);
 

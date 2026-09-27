@@ -37,8 +37,7 @@ class _QuickActionsScreenState extends State<QuickActionsScreen> {
             amountMl: amountMl,
           ),
         );
-    unawaited(_analytics.capture(AnalyticsEvent.quickActionLogged,
-        properties: const {'kind': 'water'}));
+    unawaited(_analytics.capture(AnalyticsEvent.waterLogged));
     if (!mounted) return;
     setState(() => _status = 'Logged ${amountMl}ml of water.');
   }
@@ -64,8 +63,7 @@ class _QuickActionsScreenState extends State<QuickActionsScreen> {
             weightKg: 70,
           ),
         );
-    unawaited(_analytics.capture(AnalyticsEvent.quickActionLogged,
-        properties: const {'kind': 'weight'}));
+    unawaited(_analytics.capture(AnalyticsEvent.weightLogged));
     if (!mounted) return;
     setState(() => _status = "Logged today's weight.");
   }
