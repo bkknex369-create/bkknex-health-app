@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,8 +37,8 @@ class _QuickActionsScreenState extends State<QuickActionsScreen> {
             amountMl: amountMl,
           ),
         );
-    await _analytics.capture(AnalyticsEvent.quickActionLogged,
-        properties: const {'kind': 'water'});
+    unawaited(_analytics.capture(AnalyticsEvent.quickActionLogged,
+        properties: const {'kind': 'water'}));
     if (!mounted) return;
     setState(() => _status = 'Logged ${amountMl}ml of water.');
   }
@@ -62,8 +64,8 @@ class _QuickActionsScreenState extends State<QuickActionsScreen> {
             weightKg: 70,
           ),
         );
-    await _analytics.capture(AnalyticsEvent.quickActionLogged,
-        properties: const {'kind': 'weight'});
+    unawaited(_analytics.capture(AnalyticsEvent.quickActionLogged,
+        properties: const {'kind': 'weight'}));
     if (!mounted) return;
     setState(() => _status = "Logged today's weight.");
   }
