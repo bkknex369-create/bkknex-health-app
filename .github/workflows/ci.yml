@@ -20,8 +20,13 @@ jobs:
         # platform folders (e.g. android/) — it does not touch pubspec.yaml
         # or anything under lib/. This keeps generated Gradle/wrapper
         # binaries out of version control while still giving CI a real
-        # buildable android/ directory every run.
-        run: flutter create --platforms=android --org com.bkknex .
+        # buildable android/ directory every run. It also regenerates a
+        # stock test/widget_test.dart (referencing a nonexistent MyApp
+        # counter widget) every time, which must be removed before `flutter
+        # test` runs against our real widget tests.
+        run: |
+          flutter create --platforms=android --org com.bkknex .
+          rm -f test/widget_test.dart
 
       - name: Install dependencies
         run: flutter pub get
